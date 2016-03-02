@@ -78,6 +78,16 @@ describe('markdown processing and syntax highlighting', function () {
     assert(~indentHtml.indexOf('&#xA0;'))
   })
 
+  it('renders relaxed link reference definitions the same as normal ones', function () {
+    assert(~fixtures['link-ref'].indexOf('[linkref]:'))
+    assert(~fixtures['link-ref-relaxed'].indexOf('[linkref]:'))
+    var $normal = marky(fixtures['link-ref'])
+    var $relaxed = marky(fixtures['link-ref-relaxed'])
+    assert($normal('a[href="/actual/link/here"]').length)
+    assert($relaxed('a[href="/actual/link/here"]').length)
+    assert.equal($normal.html(), $relaxed.html())
+  })
+
   it('linkifies fully-qualified URLs', function () {
     assert(~fixtures['maintenance-modules'].indexOf('- https://gist.github.com/sindresorhus/8435329'))
     var $ = marky(fixtures['maintenance-modules'])
